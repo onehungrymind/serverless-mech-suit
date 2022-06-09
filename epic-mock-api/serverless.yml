@@ -1,0 +1,15 @@
+service: epic-mock-api
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+
+functions:
+  hello:
+    handler: handler.users
+    events:
+      - httpApi:
+          path: /api/users
+          method: get
