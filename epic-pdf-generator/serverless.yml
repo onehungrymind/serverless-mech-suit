@@ -1,0 +1,27 @@
+service: epic-pdf-generator
+
+frameworkVersion: '3'
+
+custom:
+  bucket: epic-stats
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:PutObject
+        - s3:PutObjectAcl
+      Resource: "arn:aws:s3:::${self:custom.bucket}/*"
+
+functions:
+  generate:
+    handler: handler.generate
+    events:
+      - httpApi:
+          path: /api/pdf
+          method: post
+    environment:
+      BUCKET: ${self:custom.bucket}
+      REGION: ${aws:region}

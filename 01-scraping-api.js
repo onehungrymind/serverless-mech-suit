@@ -24,6 +24,18 @@ const fetchHtml = async (url) => {
   }
 };
 
+const parseResult = ($, element) => {
+  const result = {};
+  $(element)
+    .find('td')
+    .each((i, elm) => (result[getProp(i)] = $(elm).text()));
+
+  return result;
+};
+
+const prettyPrint = (result) =>
+  `${result.school} with a ${result.record} record`;
+
 const scrape = async () => {
   const html = await fetchHtml(URL);
   const $ = cheerio.load(html);
@@ -35,15 +47,3 @@ const scrape = async () => {
 
   return results;
 };
-
-const parseResult = ($, element) => {
-  const result = {};
-  $(element)
-    .find('td')
-    .each((i, elm) => (result[getProp(i)] = $(elm).text()));
-
-    return result;
-};
-
-const prettyPrint = (result) =>
-  `${result.school} with a ${result.record} record`;
